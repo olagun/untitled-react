@@ -1,0 +1,21 @@
+{
+  "name": "untitled-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "framer-motion": "^1.6.8",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
+    "react-scripts": "0.9.x",
+    "react-use": "^12.2.3",
+    "styled-components": "^4.4.0",
+    "styled-map": "^3.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

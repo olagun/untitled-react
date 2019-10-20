@@ -7,12 +7,11 @@ import { ToolIcon } from "./styled/ToolIcon";
 
 const Cursor = ({
   active = false,
-  x = 0,
-  y = 0,
   person: { name, color, img } = JAY,
-  tool = null
+  tool = null,
+  childRef = null
 }) => (
-  <CursorContainer style={{ x, y }} color={color} active={active}>
+  <CursorContainer ref={childRef} color={color} active={active}>
     {tool && <ToolIcon src={`${tool}.svg`} />}
     <ProfileIcon src={img} />
     <Label>{name}</Label>

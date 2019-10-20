@@ -12,25 +12,27 @@ import { MainInner } from "./styled/MainInner";
 import { CREATED_ARTBOARD, VECTOR } from "../config";
 
 const Window = () => (
-  <WindowContainer>
-    <Cursor x={100} tool={VECTOR} active/>
-    <Toolbar />
-    <MainContainer>
-      <SidePanel title="Layers">
-        <LayerItem>Untitled</LayerItem>
-        <LayerItem>Is how everything</LayerItem>
-      </SidePanel>
-      <MainInner>
-        <Artboard />
-        <Tools />
-      </MainInner>
-      <SidePanel title="History">
-        <HistoryItem time={0} action={CREATED_ARTBOARD}>
-          created a new artboard
-        </HistoryItem>
-      </SidePanel>
-    </MainContainer>
-  </WindowContainer>
+  <div>
+    <Cursor x={0} tool={VECTOR} active />
+    <WindowContainer>
+      <Toolbar />
+      <MainContainer>
+        <SidePanel title="Layers">
+          <LayerItem>Untitled</LayerItem>
+          <LayerItem>Is how everything</LayerItem>
+        </SidePanel>
+        <MainInner>
+          <Artboard />
+          <Tools />
+        </MainInner>
+        <SidePanel title="History">
+          <HistoryItem time={0} action={CREATED_ARTBOARD}>
+            created a new artboard
+          </HistoryItem>
+        </SidePanel>
+      </MainContainer>
+    </WindowContainer>
+  </div>
 );
 
 export { Window };

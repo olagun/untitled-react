@@ -8,6 +8,7 @@ const CursorContainer = styled(motion.div)`
   top: 0;
   left: 0;
   padding: 8px;
+  z-index: 999;
   box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.33);
   border-radius: ${styledMap`
     active: 16px 6px 6px 16px;

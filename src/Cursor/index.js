@@ -8,10 +8,10 @@ const Cursor = ({
   active = false,
   x = 0,
   y = 0,
-  person: { name, color } = JAY
+  person: { name, color, img } = JAY
 }) => (
   <CursorContainer style={{ x, y }} color={color} active={active}>
-    <Icon src={name} />
+    <Icon src={img} />
     <Label>{name}</Label>
   </CursorContainer>
 );

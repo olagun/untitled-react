@@ -6,11 +6,7 @@ const Label = styled.div`
   color: rgba(0, 0, 0, 0.66);
   letter-spacing: 0;
   padding: 0;
-  line-height: 16px;
-  margin-left: 8px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  line-height: 20px;
 `;
 
 export { Label };

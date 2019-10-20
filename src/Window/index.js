@@ -7,6 +7,9 @@ import { Artboard } from "../Artboard";
 import { LayerItem } from "../LayerItem";
 import { HistoryItem } from "../HistoryItem";
 import { Cursor } from "../Cursor";
+import { Tools } from "../Tools";
+import { MainInner } from "./styled/MainInner";
+import { CREATED_ARTBOARD } from "../config";
 
 const Window = () => (
   <WindowContainer>
@@ -17,9 +20,12 @@ const Window = () => (
         <LayerItem>Untitled</LayerItem>
         <LayerItem>Is how everything</LayerItem>
       </SidePanel>
-      <Artboard />
+      <MainInner>
+        <Artboard />
+        <Tools />
+      </MainInner>
       <SidePanel title="History">
-        <HistoryItem time={0}>Test</HistoryItem>
+        <HistoryItem time={0} action={CREATED_ARTBOARD}>created a new artboard</HistoryItem>
       </SidePanel>
     </MainContainer>
   </WindowContainer>

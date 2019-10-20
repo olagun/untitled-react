@@ -4,14 +4,15 @@ import { Label } from "./styled/Label";
 import { JAY } from "../config";
 import { HistoryItemContainer } from "./styled/HistoryItemContainer";
 import { Timestamp } from "./styled/Timestamp";
+import { HistoryItemInner } from "./styled/HistoryItemInner";
+import { B } from "./styled/B";
 
-const HistoryItem = ({ person: { name } = JAY, time = 0, children }) => (
+const HistoryItem = ({ person: { name, img } = JAY, time = 0, children }) => (
   <HistoryItemContainer>
-    <Icon src={`${name}.png`} />
-    <div>
+    <Icon src={img} />
+    <HistoryItemInner>
       <Label>
-        {name}
-        {children}
+        <B>{name}</B> {children}
       </Label>
       <Timestamp>
         {time <= 0
@@ -20,8 +21,9 @@ const HistoryItem = ({ person: { name } = JAY, time = 0, children }) => (
           ? `${Math.floor(time * 100)}ms`
           : `${Math.floor(time)}s`}
       </Timestamp>
-    </div>
+    </HistoryItemInner>
   </HistoryItemContainer>
 );
+
 
 export { HistoryItem };

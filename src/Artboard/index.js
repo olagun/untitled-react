@@ -6,7 +6,7 @@ const Artboard = ({ children }) => {
   const { width, height } = useWindowSize();
 
   return (
-    <ArtboardContainer aspectRatio={width / height}>
+    <ArtboardContainer aspectRatio={width / height} offset={-48}>
       {children}
     </ArtboardContainer>
   );

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import styledMap from "styled-map";
 
 const CursorContainer = styled(motion.div)`
+  display: flex;
   position: absolute;
   top: 0;
   left: 0;

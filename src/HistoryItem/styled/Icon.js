@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const Icon = styled.img`
-  height: 16px;
+  clip-path: circle(50%);
+  height: 18px;
 `;
 
 export { Icon };

@@ -9,11 +9,11 @@ import { HistoryItem } from "../HistoryItem";
 import { Cursor } from "../Cursor";
 import { Tools } from "../Tools";
 import { MainInner } from "./styled/MainInner";
-import { CREATED_ARTBOARD } from "../config";
+import { CREATED_ARTBOARD, VECTOR } from "../config";
 
 const Window = () => (
   <WindowContainer>
-    <Cursor x={100} />
+    <Cursor x={100} tool={VECTOR} active/>
     <Toolbar />
     <MainContainer>
       <SidePanel title="Layers">
@@ -25,7 +25,9 @@ const Window = () => (
         <Tools />
       </MainInner>
       <SidePanel title="History">
-        <HistoryItem time={0} action={CREATED_ARTBOARD}>created a new artboard</HistoryItem>
+        <HistoryItem time={0} action={CREATED_ARTBOARD}>
+          created a new artboard
+        </HistoryItem>
       </SidePanel>
     </MainContainer>
   </WindowContainer>

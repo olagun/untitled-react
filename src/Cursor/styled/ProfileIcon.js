@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const Icon = styled.img`
+const ProfileIcon = styled.img`
   clip-path: circle(50%);
   height: 18px;
   margin-right: 8px;
 `;
 
-export { Icon };
+export { ProfileIcon };

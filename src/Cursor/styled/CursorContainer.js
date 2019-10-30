@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import styledMap from "styled-map";
 
-const CursorContainer = styled(motion.div)`
+// const CursorContainer = styled(motion.div)`
+const CursorContainer = styled.div`
   display: flex;
   position: absolute;
   top: 0;
@@ -10,11 +11,12 @@ const CursorContainer = styled(motion.div)`
   padding: 8px;
   z-index: 999;
   box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.33);
+  background: ${({ color = "transparent" }) => color};
+  transition: border-radius 250ms ease-in-out;
   border-radius: ${styledMap`
     active: 16px 6px 6px 16px;
     default: 6px 6px 6px 6px;
   `}
-  background: ${({ color = "transparent" }) => color};
 `;
 
 export { CursorContainer };

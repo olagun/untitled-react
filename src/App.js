@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import './App.css';
-import { createGlobalStyle } from 'styled-components';
-import { Window } from './Window';
-import CustomEase from './Plugins/CustomEase';
+import React, { Component } from "react";
+import "./App.css";
+import { createGlobalStyle } from "styled-components";
+import { Window } from "./Window";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -17,20 +16,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export default class App extends Component {
-  constructor() {
-    super();
-    CustomEase.create('Mo', '0.455, 0.03, 0.515, 0.955');
-    // cubic-bezier(0.455, 0.03, 0.515, 0.955)
-    // CustomEase.create('Mo', '0.64, 0.04, 0.35, 1');
-  }
+const App = () => (
+  <React.Fragment>
+    <GlobalStyle />
+    <Window />
+  </React.Fragment>
+);
 
-  render() {
-    return (
-      <React.Fragment>
-        <GlobalStyle />
-        <Window />
-      </React.Fragment>
-    );
-  }
-}
+export { App };

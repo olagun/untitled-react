@@ -7,6 +7,8 @@ import { ToolIcon } from "./styled/ToolIcon";
 
 const Cursor = ({
   active = false,
+  x = 0,
+  y = 0,
   person: { name, color, img } = JAY,
   tool = null,
   ...props

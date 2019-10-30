@@ -13,10 +13,30 @@ import { CREATED_ARTBOARD, VECTOR, PEOPLE } from "../config";
 import { useMotionValue, useAnimation } from "framer-motion";
 
 async function moveTo(state, name, x, y) {
-  return state["JAY"].control.start(person => ({
-    x: 100,
-    transition: { delay: 0.3 }
-  }));
+  // animate the sam way here
+
+  return new Promise((resolve, reject) => {
+    let curr = 0;
+    let target = 100;
+
+    function lerp(a, b, t) {
+      return (1 - t) * a + t * b;
+    }
+
+    function tick() {
+      // add noise
+      curr = lerp(curr, target, 0.1);
+
+      state[name].x.set(curr);
+      state[name].y.set(curr);
+
+      if (target - curr <= 0.01) return;
+
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  });
 }
 
 const Window = () => {
@@ -37,25 +57,31 @@ const Window = () => {
     )
   );
 
-  useEffect(async () => {
-    await moveTo(cursorState, "JAY", 200, 200);
+  useEffect(() => {
+    (async () => {
+      await moveTo(cursorState, "JAY", 200, 200);
+    })();
   }, []);
 
   return (
     <div>
       {Object.values(cursorState).map(
-        ({
-          person = null,
-          x = 0,
-          y = 0,
-          active = false,
-          tool = null,
-          control
-        }) => (
+        (
+          {
+            person = null,
+            x = 0,
+            y = 0,
+            active = false,
+            tool = null,
+            control = null
+          },
+          i
+        ) => (
           <Cursor
+            key={i}
             x={x}
             y={y}
-            tool={VECTOR}
+            tool={tool}
             active={active}
             person={person}
             animate={control}

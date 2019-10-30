@@ -5,7 +5,6 @@ const VECTOR = "vector";
 const PENCIL = "pencil";
 
 const JAY = { name: "Jay", color: "#000000", img: "jmo.jpg" };
-const NOTJAY = { name: "Jay", color: "#FF5F58", img: "jmo.jpg" };
 const SAM = { name: "Sam", color: "#3399FF", img: "sam.jpg" };
 const DARIO = { name: "Dario", color: "#3399FF", img: "dario.png" };
 

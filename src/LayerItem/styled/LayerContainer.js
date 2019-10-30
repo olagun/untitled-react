@@ -11,6 +11,21 @@ const LayerContainer = styled.div`
     margin-top: 16px;
   }
 
+  ::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -24px;
+    bottom: -8px;
+    right: -24px;
+    transition: background-color 0.2s ease;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  :hover::before {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
   ::after {
     content: "";
     position: absolute;

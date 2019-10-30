@@ -10,9 +10,10 @@ const Cursor = ({
   x = 0,
   y = 0,
   person: { name, color, img } = JAY,
-  tool = null
+  tool = null,
+  ...props
 }) => (
-  <CursorContainer style={{ x, y }} color={color} active={active}>
+  <CursorContainer {...props} style={{ x, y }} color={color} active={active}>
     {tool && <ToolIcon src={`${tool}.svg`} />}
     <ProfileIcon src={img} />
     <Label>{name}</Label>

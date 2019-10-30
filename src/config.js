@@ -10,7 +10,10 @@ const DARIO = { name: "Dario", color: "#3399FF", img: "dario.png" };
 
 const CREATED_ARTBOARD = "created a new artboard";
 
+const PEOPLE = { JAY, SAM, DARIO };
+
 export {
+  PEOPLE,
   IMAGE,
   TEXT,
   SHAPE,

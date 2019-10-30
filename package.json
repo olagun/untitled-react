@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "framer-motion": "^1.6.8",
+    "ola": "^1.1.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-scripts": "0.9.x",

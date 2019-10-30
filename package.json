@@ -9,6 +9,7 @@
     "react-dom": "^16.10.1",
     "react-scripts": "0.9.x",
     "react-use": "^12.2.3",
+    "simplex-noise": "^2.4.0",
     "styled-components": "^4.4.0",
     "styled-map": "^3.3.0"
   },

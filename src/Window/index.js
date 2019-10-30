@@ -11,35 +11,30 @@ import { Tools } from "../Tools";
 import { MainInner } from "./styled/MainInner";
 import { CREATED_ARTBOARD, VECTOR, PEOPLE } from "../config";
 import { useMotionValue, useAnimation } from "framer-motion";
+import { lerp } from "../util";
 
-async function moveTo(state, name, x, y) {
-  // animate the sam way here
+async function moveTo(state, name, targetX, targetY) {
+  return new Promise(resolve => {
+    let progress = 0;
+    const [startX, startY] = [state[name].x.get(), state[name].y.get()];
 
-  return new Promise((resolve, reject) => {
-    let curr = 0;
-    let target = 100;
+    const tick = () => {
+      progress = lerp(progress, 1, 0.1);
 
-    function lerp(a, b, t) {
-      return (1 - t) * a + t * b;
-    }
+      state[name].x.set(lerp(startX, targetX, progress));
+      state[name].y.set(lerp(startY, targetY, progress));
 
-    function tick() {
-      // add noise
-      curr = lerp(curr, target, 0.1);
-
-      state[name].x.set(curr);
-      state[name].y.set(curr);
-
-      if (target - curr <= 0.01) return;
+      if (1 - progress <= 0.01) resolve();
 
       requestAnimationFrame(tick);
-    }
+    };
 
     requestAnimationFrame(tick);
   });
 }
 
 const Window = () => {
+  const [layerState, setLayerState] = useState({});
   const [cursorState, setCursorState] = useState(
     Object.entries(PEOPLE).reduce(
       (obj, [name, person]) => ({
@@ -60,6 +55,7 @@ const Window = () => {
   useEffect(() => {
     (async () => {
       await moveTo(cursorState, "JAY", 200, 200);
+      await moveTo(cursorState, "JAY", 100, 200);
     })();
   }, []);
 

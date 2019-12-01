@@ -10,7 +10,7 @@ const PreloaderLogo = styled.span`
   font-size: 24px;
   font-weight: bold;
   color: rgba(0, 0, 0, 1);
-  animation: ${blink} infinite 2s ease;
+  animation: ${blink} infinite 1s ease;
 `;
 
 export { PreloaderLogo };

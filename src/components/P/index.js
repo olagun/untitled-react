@@ -7,6 +7,7 @@ const P = styled(motion.div)`
   margin: 0;
   margin-bottom: 16px;
   max-width: 60%;
+  width: fit-content;
 `;
 
 export { P };

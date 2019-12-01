@@ -46,12 +46,13 @@ const layerSymbols = {
   text1: Symbol(),
   text2: Symbol(),
   text3: Symbol(),
+  text4: Symbol(),
   sig: Symbol()
 };
 
 const layerRefs = {};
 
-const preloaderTime = 0.5;
+const preloaderTime = 4;
 
 // thinking about react context and top level component logice
 // versus nesetd context logic
@@ -106,15 +107,22 @@ const Window = () => {
   useEffect(() => {
     // steppign through things
     (async () => {
+      const { artboard: artboardBounds } = store.getState();
+
       switch (step) {
         case PRELOADER_STEP:
+          Object.values(layerSymbols).map(symbol => {
+            const ref = layerRefs[symbol];
+
+            ref.style.opacity = 0;
+          });
+
           setTimeout(() => {
             dispatch({ type: ADVANCE_STEP });
           }, preloaderTime * 1000);
           break;
         case CREATE_ARTBOARD_STEP:
           // draw artboard
-          const { artboard: artboardBounds } = store.getState();
 
           await drawShape({
             cursorControl: cursorState[DARIO.name].control,
@@ -127,13 +135,13 @@ const Window = () => {
             addBounds: true
           });
 
-          // layers.artboardLayer.x = 0;
-          // layers.artboardLayer.y = 0;
+          layers.artboardLayer.x = 0;
+          layers.artboardLayer.y = 0;
 
-          // layers.artboardLayer.width = artboardBounds.width;
-          // layers.artboardLayer.height = artboardBounds.height;
+          layers.artboardLayer.width = artboardBounds.width;
+          layers.artboardLayer.height = artboardBounds.height;
 
-          // console.log(layers.artboardLayer);
+          console.log(2);
 
           // await artboardControl.start({
           //   strokeDasharray: "0 0"
@@ -154,19 +162,21 @@ const Window = () => {
 
           break;
         case ASSEMBLING_STEP:
-          await drawShape({
+          const diameter = artboardBounds.height - 144;
+
+          drawShape({
             cursorControl: cursorState[DARIO.name].control,
             layerControl: layers.globeLayer.control,
             shape: CIRCLE,
-            x: 100,
-            y: 100,
-            width: 100,
-            height: 100,
+            x: artboardBounds.width - diameter - 72,
+            y: 72,
+            width: artboardBounds.height - 144,
+            height: artboardBounds.height - 144,
             addBounds: true
           });
 
           const textLayers = [
-            { layer: layerSymbols.title, person: DARIO },
+            { layer: layerSymbols.title, person: PEOPLE.CHERIN },
             [
               { layer: layerSymbols.text1, person: PEOPLE.CHERIN },
               { layer: layerSymbols.text2, person: PEOPLE.NATHAN }
@@ -280,14 +290,15 @@ const Window = () => {
           )
         )}
       <WindowContainer showShadow={step > PRELOADER_STEP}>
-        {step === PRELOADER_STEP && <Preloader />}{" "}
+        <AnimatePresence>
+          {step === PRELOADER_STEP && <Preloader />}{" "}
+        </AnimatePresence>
         <Toolbar show={step > CREATE_ARTBOARD_STEP} />{" "}
         <MainContainer>
-          <SidePanel title="Layers" show={step > CREATE_ARTBOARD_STEP}>
-            {" "}
-            {/* <LayerItem active>Untitled</LayerItem>
-            <LayerItem>Is how everything</LayerItem> */}{" "}
-          </SidePanel>{" "}
+          <SidePanel
+            title="Layers"
+            show={step > CREATE_ARTBOARD_STEP}
+          ></SidePanel>{" "}
           <MainInner>
             <Artboard
               artboardControls={artboardControls}

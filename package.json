@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "eases": "^1.0.8",
     "framer-motion": "^1.6.8",
     "ola": "^1.1.0",
     "react": "^16.10.1",

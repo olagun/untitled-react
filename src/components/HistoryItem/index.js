@@ -10,7 +10,7 @@ import { useEffectOnce } from "react-use";
 
 const HistoryItem = ({
   person: { name, img } = JAY,
-  time = 0,
+  time = Date.now(),
   action = CREATED_ARTBOARD
 }) => {
   const [relativeTime, setTime] = useState(0);
@@ -26,6 +26,22 @@ const HistoryItem = ({
     };
   });
 
+  function toTime(time) {
+    if (time < 1000) {
+      return "Just now";
+    }
+
+    if (time < 60 * 1000) {
+      return `${Math.floor((relativeTime / 1000) | 0)}s`;
+    }
+
+    if (time < 60 * 60 * 1000) {
+      return `${Math.floor((relativeTime / 60 / 1000) | 0)}m`;
+    }
+
+    return `${Math.floor((relativeTime / 60 / 60 / 1000) | 0)}h`;
+  }
+
   return (
     <HistoryItemContainer>
       <Icon src={img} />
@@ -33,13 +49,7 @@ const HistoryItem = ({
         <Label>
           <B>{name}</B> {actionMap[action]}
         </Label>
-        <Timestamp>
-          {relativeTime <= 500
-            ? "Just now"
-            : relativeTime < 1000
-            ? `${Math.floor(relativeTime)}ms`
-            : `${Math.floor((relativeTime / 1000) | 0)}s`}
-        </Timestamp>
+        <Timestamp>{toTime(relativeTime)}</Timestamp>
       </HistoryItemInner>
     </HistoryItemContainer>
   );

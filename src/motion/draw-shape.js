@@ -10,11 +10,9 @@ async function drawShape({
   width,
   height,
   addBounds = false,
-
   placeholder = false
 }) {
   const { artboard: artboardBounds } = store.getState();
-
   const offset = addBounds ? artboardBounds : { x: 0, y: 0 };
 
   // move cursor in place

@@ -22,6 +22,7 @@ async function animateText({
   store.dispatch({
     type: ADDED_LAYER,
     layer: layerSymbol,
+    layerType: TEXT,
     person,
     active: true
   });
@@ -54,6 +55,7 @@ async function animateText({
 
   layer.style.opacity = 1;
 
+  // console.log(layer.dataset);
   await new Promise(resolve => {
     let typingSpeed = 70;
     // factor speed
@@ -61,15 +63,21 @@ async function animateText({
     function duration(speed, dist, slowdown = false, disp = 20) {
       // radius increases closer to completion exponentionally
 
+      // const avgWord = 10;
+      // const value = disp * Math.sin(0.1 * dist) + speed;
+      // const perWordValue = value * avgWord;
+
       const avgWord = 10;
-      const value = disp * Math.sin(0.1 * dist) + speed;
-      const perWordValue = value * avgWord;
+      const perWordValue = 100 * avgWord;
 
       return slowdown ? 500 : (60 / perWordValue) * 1000;
     }
 
+    let text = "";
+
     function type() {
       if (cursor < layer.children.length) {
+        text += layer.children[cursor].innerHTML;
         const { top, right } = layer.children[cursor].getBoundingClientRect();
 
         layer.children[cursor].style.opacity = 1;
@@ -77,7 +85,7 @@ async function animateText({
         store.dispatch({
           type: UPDATE_LAYER,
           layer: layerSymbol,
-          name: "foo"
+          name: text
         });
 
         cursorControl.start({ x: right, y: top - 32 });
@@ -105,7 +113,6 @@ async function animateText({
   store.dispatch({
     type: UPDATE_LAYER,
     layer: layerSymbol,
-    name: "foo",
     active: false
   });
 

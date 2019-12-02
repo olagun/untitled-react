@@ -34,7 +34,8 @@ const ASSEMBLING_STEP = 2;
 const FINISHED_STEP = 3;
 
 const actionMap = {
-  [CREATED_ARTBOARD]: "created an artboard"
+  [CREATED_ARTBOARD]: "created an artboard",
+  [TEXT]: "added a new text layer"
 };
 
 export {

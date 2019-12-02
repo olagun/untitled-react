@@ -1,7 +1,7 @@
 import { ADDED_LAYER, UPDATE_LAYER, JAY, SHAPE, SQUARE } from "../config";
 
 const layerSizes = (state = {}, message) => {
-  const { type, layer  } = message;
+  const { type, layer } = message;
 
   if (type === ADDED_LAYER) {
     const {
@@ -12,6 +12,7 @@ const layerSizes = (state = {}, message) => {
       name = "Untitled",
       person = JAY,
       active = false,
+      layerType = SHAPE,
       placeholder = false
     } = message;
 
@@ -26,7 +27,7 @@ const layerSizes = (state = {}, message) => {
         person,
         placeholder,
         active,
-        type: SHAPE
+        type: layerType
       }
     };
   }

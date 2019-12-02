@@ -281,7 +281,6 @@ const Window = () => {
             {Reflect.ownKeys(layerSizes).map(key => {
               const layer = layerSizes[key];
 
-              console.log(layer);
               return (
                 <LayerItem
                   active={layer.active}
@@ -360,13 +359,16 @@ const Window = () => {
           </MainInner>
           <Tools show={step > CREATE_ARTBOARD_STEP} control={toolControls} />
           <SidePanel title="History" show={step > CREATE_ARTBOARD_STEP}>
-            {history.map(({ person, time, action }) => (
-              <HistoryItem
-                person={person}
-                time={time}
-                action={action}
-              />
-            ))}
+            <AnimatePresence>
+              {history.map(({ person, time, action }) => (
+                <HistoryItem
+                  key={time}
+                  person={person}
+                  time={time}
+                  action={action}
+                />
+              ))}
+            </AnimatePresence>
           </SidePanel>
         </MainContainer>{" "}
       </WindowContainer>{" "}

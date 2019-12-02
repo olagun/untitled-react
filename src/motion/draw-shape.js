@@ -10,6 +10,7 @@ async function drawShape({
   width,
   height,
   addBounds = false,
+
   placeholder = false
 }) {
   const { artboard: artboardBounds } = store.getState();
@@ -56,6 +57,13 @@ async function drawShape({
         y: offset.y + y + height
       })
     ]);
+  }
+
+  if (placeholder) {
+    layerControl.start({
+      fill: "rgba(0, 0, 0, 0.05)",
+      strokeDasharray: "0 0"
+    });
   }
 }
 

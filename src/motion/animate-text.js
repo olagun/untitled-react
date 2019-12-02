@@ -1,7 +1,8 @@
 import { store } from "../store";
 import { drawShape } from "./draw-shape";
-import { SQUARE } from "../config";
+import { SQUARE, SHAPE, TEXT } from "../config";
 import eases from "eases/circ-in";
+import { selectTool } from "./select-tool";
 
 // strat, write dummy text side effect, measure, create actual, then do
 async function animateText({
@@ -14,18 +15,21 @@ async function animateText({
   const layer = layerRefs[layerSymbol];
   const { x, y, width, height } = layer.getBoundingClientRect();
 
+  // cursor ttype needs to chnage to text
+  await selectTool({ cursorControl, tool: TEXT });
+
   await drawShape({
     cursorControl,
     layerControl,
     shape: SQUARE,
-    x,
-    y,
-    width,
-    height
+    x: x - 16,
+    y: y - 4,
+    width: width + 32,
+    height: height + 8
   });
 
   // move back into position to write text
-  await cursorControl.start({ x, y });
+  await cursorControl.start({ x, y: y - 32 });
 
   let cursor = 0;
   const spans = layer.children;
@@ -35,7 +39,7 @@ async function animateText({
 
   layer.style.opacity = 1;
 
-  return new Promise(resolve => {
+  await new Promise(resolve => {
     let typingSpeed = 70;
     // factor speed
 
@@ -71,6 +75,12 @@ async function animateText({
 
     setTimeout(type, duration(typingSpeed, cursor));
   });
+
+  layerControl.set({
+    stroke: "rgba(0, 0, 0, 0)"
+  });
+
+  cursorControl.start({ x: -100, y: -100 });
 }
 
 export { animateText };

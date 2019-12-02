@@ -21,6 +21,7 @@ const CREATED_ARTBOARD = "created a new artboard";
 const CREATED_HISTORY_ITEM = Symbol();
 const ARTBOARD_LAYER_REF = Symbol();
 
+const ADDED_LAYER = Symbol();
 const PEOPLE = { JAY, SAM, DARIO, NATHAN, MICAH, CHERIN };
 
 // Steps
@@ -36,6 +37,7 @@ const actionMap = {
 };
 
 export {
+  ADDED_LAYER,
   ARTBOARD_LAYER_REF,
   actionMap,
   CREATED_HISTORY_ITEM,

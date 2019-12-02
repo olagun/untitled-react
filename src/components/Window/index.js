@@ -26,7 +26,8 @@ import {
   ADVANCE_STEP,
   CREATED_HISTORY_ITEM,
   ASSEMBLING_STEP,
-  ARTBOARD_LAYER_REF
+  ARTBOARD_LAYER_REF,
+  ADDED_LAYER
 } from "../../config";
 import { useMotionValue, useAnimation, AnimatePresence } from "framer-motion";
 import { Shape } from "../Shape";
@@ -81,6 +82,7 @@ const Window = () => {
   };
 
   Object.values(layerSymbols).forEach(symbol => {
+    console.log(symbol);
     layers[symbol] = {
       layer: { type: SHAPE, shapeType: SQUARE },
       control: useAnimation()
@@ -105,7 +107,6 @@ const Window = () => {
   // scaling by using vw instead of pixels
   // 180px + 10vw
   useEffect(() => {
-    // steppign through things
     (async () => {
       const { artboard: artboardBounds } = store.getState();
 
@@ -113,7 +114,6 @@ const Window = () => {
         case PRELOADER_STEP:
           Object.values(layerSymbols).map(symbol => {
             const ref = layerRefs[symbol];
-
             ref.style.opacity = 0;
           });
 
@@ -135,19 +135,20 @@ const Window = () => {
             addBounds: true
           });
 
-          layers.artboardLayer.x = 0;
-          layers.artboardLayer.y = 0;
-
-          layers.artboardLayer.width = artboardBounds.width;
-          layers.artboardLayer.height = artboardBounds.height;
-
-          console.log(2);
-
           // await artboardControl.start({
           //   strokeDasharray: "0 0"
           // });
 
           // add shape layer to state
+
+          dispatch({
+            type: ADDED_LAYER,
+            layer: "artboardLayer",
+            x: artboardBounds.x,
+            y: artboardBounds.y,
+            width: artboardBounds.width,
+            height: artboardBounds.height
+          });
 
           dispatch({ type: ADVANCE_STEP });
 
@@ -172,15 +173,35 @@ const Window = () => {
             y: 72,
             width: artboardBounds.height - 144,
             height: artboardBounds.height - 144,
-            addBounds: true
-          });
+            addBounds: true,
+         placeholder: true
+          }).then(e =>
+            cursorState[DARIO.name].control.start({ x: -100, y: -100 })
+          );
+
+          // dispatch({
+          //   type: ADDED_LAYER,
+          //   layer: "artboardLayer",
+          //   x: artboardBounds.x,
+          //   y: artboardBounds.y,
+          //   width: artboardBounds.width,
+          //   height: artboardBounds.height
+          // });
+
+          // const textLayers = [
+          //   { layer: layerSymbols.title, person: PEOPLE.CHERIN },
+          //   [
+          //     { layer: layerSymbols.text1, person: PEOPLE.CHERIN },
+          //     { layer: layerSymbols.text2, person: PEOPLE.NATHAN }
+          //   ],
+          //   { layer: layerSymbols.text3, person: PEOPLE.MICAH },
+          //   { layer: layerSymbols.text4, person: PEOPLE.SAM }
+          // ];
 
           const textLayers = [
             { layer: layerSymbols.title, person: PEOPLE.CHERIN },
-            [
-              { layer: layerSymbols.text1, person: PEOPLE.CHERIN },
-              { layer: layerSymbols.text2, person: PEOPLE.NATHAN }
-            ],
+            { layer: layerSymbols.text1, person: PEOPLE.CHERIN },
+            { layer: layerSymbols.text2, person: PEOPLE.NATHAN },
             { layer: layerSymbols.text3, person: PEOPLE.MICAH },
             { layer: layerSymbols.text4, person: PEOPLE.SAM }
           ];
@@ -211,6 +232,8 @@ const Window = () => {
             }
           }, Promise.resolve());
 
+          dispatch({ type: ADVANCE_STEP });
+
           break;
       }
     })();
@@ -228,40 +251,55 @@ const Window = () => {
     pointer-events: none;
   `;
 
+  const layerEls = (
+    <SvgContainer
+      viewBox={`0 0 ${size.width} ${size.height}`}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {Reflect.ownKeys(layers).map((key, i) => {
+        let {
+          layer: { type, shapeType },
+          x = 0,
+          y = 0,
+          width = 0,
+          height = 0,
+          control
+        } = layers[key];
+
+        const { layerSizes } = store.getState();
+        let serialize = false;
+
+        if (layerSizes[key]) {
+          x = layerSizes[key].x;
+          y = layerSizes[key].y;
+          height = layerSizes[key].height;
+          width = layerSizes[key].width;
+          serialize = true;
+        }
+
+        if (type === SHAPE) {
+          return (
+            <Shape
+              key={i}
+              x={x}
+              y={y}
+              width={width}
+              height={height}
+              type={shapeType}
+              control={control}
+              serialize={serialize}
+            />
+          );
+        }
+      })}
+    </SvgContainer>
+  );
+
+  const { layerSizes } = store.getState();
+
   return (
     <div>
-      <SvgContainer
-        viewBox={`0 0 ${size.width} ${size.height}`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {Object.values(layers).map(
-          (
-            {
-              layer: { type, shapeType },
-              x = 0,
-              y = 0,
-              width = 0,
-              height = 0,
-              control
-            },
-            i
-          ) => {
-            if (type === SHAPE) {
-              return (
-                <Shape
-                  key={i}
-                  x={x}
-                  y={y}
-                  width={width}
-                  height={height}
-                  type={shapeType}
-                  control={control}
-                />
-              );
-            }
-          }
-        )}
-      </SvgContainer>
+      {layerEls}
       {step > PRELOADER_STEP &&
         Object.values(
           cursorState
@@ -295,10 +333,11 @@ const Window = () => {
         </AnimatePresence>
         <Toolbar show={step > CREATE_ARTBOARD_STEP} />{" "}
         <MainContainer>
-          <SidePanel
-            title="Layers"
-            show={step > CREATE_ARTBOARD_STEP}
-          ></SidePanel>{" "}
+          <SidePanel title="Layers" show={step > CREATE_ARTBOARD_STEP}>
+            {Object.keys(layerSizes).map(layer => (
+              <LayerItem>{layer}</LayerItem>
+            ))}
+          </SidePanel>{" "}
           <MainInner>
             <Artboard
               artboardControls={artboardControls}

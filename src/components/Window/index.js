@@ -174,7 +174,7 @@ const Window = () => {
             width: artboardBounds.height - 144,
             height: artboardBounds.height - 144,
             addBounds: true,
-         placeholder: true
+            placeholder: true
           }).then(e =>
             cursorState[DARIO.name].control.start({ x: -100, y: -100 })
           );
@@ -402,8 +402,8 @@ const Window = () => {
                 — the untitled
               </P>
             </Artboard>
-            <Tools show={step > CREATE_ARTBOARD_STEP} control={toolControls} />
           </MainInner>
+          <Tools show={step > CREATE_ARTBOARD_STEP} control={toolControls} />
           <SidePanel title="History" show={step > CREATE_ARTBOARD_STEP}>
             {history.map(({ person, time, action }) => (
               <HistoryItem

@@ -5,7 +5,7 @@ const ToolButtonContainer = styled(motion.div)`
   appearance: none;
   position: absolute;
   width: 100%;
-  bottom: -66px;
+  bottom: 18px;
 
   display: grid;
   grid-auto-flow: column;

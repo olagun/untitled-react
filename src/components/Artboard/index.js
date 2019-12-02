@@ -42,6 +42,7 @@ const Artboard = ({ children, artboardControls, show }) => {
         {React.Children.map(children, child => {
           return React.Children.map(child, c => {
             return React.cloneElement(child, {
+
               children: c.props.children.split("").map(d => <span>{d}</span>)
             });
           });

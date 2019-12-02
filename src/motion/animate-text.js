@@ -1,6 +1,6 @@
 import { store } from "../store";
 import { drawShape } from "./draw-shape";
-import { SQUARE, SHAPE, TEXT } from "../config";
+import { SQUARE, SHAPE, TEXT, UPDATE_LAYER, ADDED_LAYER } from "../config";
 import eases from "eases/circ-in";
 import { selectTool } from "./select-tool";
 
@@ -9,7 +9,8 @@ async function animateText({
   cursorControl,
   layerControl,
   layerSymbol,
-  layerRefs
+  layerRefs,
+  person
 }) {
   // measure text
   const layer = layerRefs[layerSymbol];
@@ -17,6 +18,20 @@ async function animateText({
 
   // cursor ttype needs to chnage to text
   await selectTool({ cursorControl, tool: TEXT });
+
+  store.dispatch({
+    type: ADDED_LAYER,
+    layer: layerSymbol,
+    person,
+    active: true
+  });
+
+  store.dispatch({
+    type: UPDATE_LAYER,
+    layer: layerSymbol,
+    person,
+    active: true
+  });
 
   await drawShape({
     cursorControl,
@@ -58,6 +73,13 @@ async function animateText({
         const { top, right } = layer.children[cursor].getBoundingClientRect();
 
         layer.children[cursor].style.opacity = 1;
+
+        store.dispatch({
+          type: UPDATE_LAYER,
+          layer: layerSymbol,
+          name: "foo"
+        });
+
         cursorControl.start({ x: right, y: top - 32 });
 
         if (
@@ -78,6 +100,13 @@ async function animateText({
 
   layerControl.set({
     stroke: "rgba(0, 0, 0, 0)"
+  });
+
+  store.dispatch({
+    type: UPDATE_LAYER,
+    layer: layerSymbol,
+    name: "foo",
+    active: false
   });
 
   cursorControl.start({ x: -100, y: -100 });

@@ -20,6 +20,7 @@ const DARIO = { name: "Dario", color: "#3399FF", img: "dario.png" };
 const CREATED_ARTBOARD = "created a new artboard";
 const CREATED_HISTORY_ITEM = Symbol();
 const ARTBOARD_LAYER_REF = Symbol();
+const UPDATE_LAYER = Symbol();
 
 const ADDED_LAYER = Symbol();
 const PEOPLE = { JAY, SAM, DARIO, NATHAN, MICAH, CHERIN };
@@ -37,6 +38,7 @@ const actionMap = {
 };
 
 export {
+  UPDATE_LAYER,
   ADDED_LAYER,
   ARTBOARD_LAYER_REF,
   actionMap,

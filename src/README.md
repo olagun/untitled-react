@@ -1,3 +1,5 @@
+# untitled. 🧢👋
+
 - need to persist animated state outside of controls
 
   - rerenders are fucking shit up shit
@@ -15,11 +17,36 @@
 cursors and other animatables should be memoized?
 or simply not stateful?
 
-Layer
+## shape()
 
-- name
+- person
+- shape
 - x
 - y
-- active
 - width
 - height
+- placeholder
+- recordHistory
+- relative
+
+## Layer
+
+- type
+  - Text
+  - Shape
+  - Image
+  - Vector
+  - Pencil
+- data
+  - shape
+  - text
+- person
+- name
+- active = [true, false]
+- show
+
+- x
+- y
+- width
+- height
+- placeholder = [true, false]

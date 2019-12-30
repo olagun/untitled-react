@@ -1,20 +1,28 @@
 import { TOOLS } from "../config";
 import { store } from "../store";
 
-async function selectTool({ cursorControl, tool, toolControls }) {
+async function selectTool({ cursorControl, tool }) {
+  // Find viewport location of the selected tool in toolbar.
   const toolIndex = TOOLS.indexOf(tool);
-  // const toolControl = toolControls[toolIndex];
   const { tools: toolWidths } = store.getState();
-  const { x, y, width, height } = toolWidths[toolIndex];
+  const {
+    x: toolX,
+    y: toolY,
+    width: toolWidth,
+    height: toolHeight
+  } = toolWidths[toolIndex];
 
-  // move to the tool
+  // Move the cursor to that location using
+  // the cursor animation controller.
   await cursorControl.start({
-    x: x + width / 2,
-    y: y + height / 2
+    x: toolX + toolWidth / 2,
+    y: toolY + toolHeight / 2
   });
 
-  cursorControl.start({
-    borderRadius: "100px 6px 6px 100px"
+  // Animate the cursor border radius to the
+  // active state.
+  cursorControl.set({
+    borderRadius: "20px 8px 8px 20px"
   });
 }
 

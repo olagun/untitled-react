@@ -1,21 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ArtboardContainer } from "./styled/ArtboardContainer";
 import { useWindowSize } from "react-use";
 import { useDispatch } from "react-redux";
 import { RESIZE } from "../../config";
 import { ArtboardInner } from "./styled/ArtboardInner";
 
-let ref = null;
-
 const Artboard = ({ children, artboardControls, show }) => {
   const { width, height } = useWindowSize();
   const dispatch = useDispatch();
+  const ref = useRef();
 
   useEffect(() => {
     function onResize() {
       dispatch({
         type: RESIZE,
-        artboardSize: ref.getBoundingClientRect()
+        artboardSize: ref.current.getBoundingClientRect()
       });
     }
 
@@ -31,19 +30,22 @@ const Artboard = ({ children, artboardControls, show }) => {
       animate={artboardControls}
       aspectRatio={width / height}
       // initial={{ opacity: 0 }}
-      ref={r => {
-        if (r) {
-          ref = r;
-        }
-      }}
+      ref={ref}
       offset={-48}
     >
-      <ArtboardInner>
+      <ArtboardInner show={show}>
         {React.Children.map(children, child => {
           return React.Children.map(child, c => {
-            return React.cloneElement(child, {
-              children: c.props.children.split("").map(d => <span>{d}</span>)
-            });
+            return (
+              <div>
+                {React.cloneElement(child, {
+                  children: c.props.children
+                    .split("")
+                    .map(d => <span>{d}</span>)
+                })}
+                <div id="cursor"></div>
+              </div>
+            );
           });
         })}
       </ArtboardInner>

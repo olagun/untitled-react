@@ -1,6 +1,7 @@
 import React from "react";
 import { Label } from "./styled/Label";
 import { SidePanelContainer } from "./styled/SidePanelContainer";
+import { SidePanelInner } from "./styled/SidePanelnner";
 
 const SidePanel = ({ title = "", children, show = false }) => (
   <SidePanelContainer
@@ -8,7 +9,16 @@ const SidePanel = ({ title = "", children, show = false }) => (
     initial={{ opacity: 0 }}
   >
     <Label>{title}</Label>
-    {children}
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        overflow: "hidden"
+      }}
+    >
+      <SidePanelInner>{children}</SidePanelInner>
+    </div>
   </SidePanelContainer>
 );
 

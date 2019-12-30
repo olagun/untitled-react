@@ -29,7 +29,7 @@ const Shape = React.memo(
       stroke: "rgba(0, 0, 0, .15)",
       strokeDasharray: width && height ? "0 0" : "8 8",
       strokeWidth: "2",
-      fill: placeholder ? "rgba(0, 0, 0, 0.05)" : "none"
+      fill: placeholder ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0)"
     };
 
     return type == SQUARE ? (

@@ -43,7 +43,12 @@ const HistoryItem = ({
   }
 
   return (
-    <HistoryItemContainer>
+    <HistoryItemContainer
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      positionTransition
+    >
       <Icon src={img} />
       <HistoryItemInner>
         <Label>

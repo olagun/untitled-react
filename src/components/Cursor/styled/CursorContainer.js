@@ -12,10 +12,7 @@ const CursorContainer = styled(motion.div)`
   box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.33);
   background: ${({ color = "transparent" }) => color};
   transition: border-radius 250ms ease-in-out;
-  border-radius: ${styledMap`
-    active: 16px 6px 6px 16px;
-    default: 6px 6px 6px 6px;
-  `}
+  border-radius: 6px;
 `;
 
 export { CursorContainer };

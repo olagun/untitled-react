@@ -1,7 +1,6 @@
 import { store } from "../store";
 import { drawShape } from "./draw-shape";
-import { SQUARE, SHAPE, TEXT, UPDATE_LAYER, ADDED_LAYER } from "../config";
-import eases from "eases/circ-in";
+import { SQUARE, TEXT, UPDATE_LAYER, ADDED_LAYER } from "../config";
 import { selectTool } from "./select-tool";
 
 // strat, write dummy text side effect, measure, create actual, then do
@@ -12,19 +11,20 @@ async function animateText({
   layerRefs,
   person
 }) {
-  // measure text
-  const layer = layerRefs[layerSymbol];
+  // Get real text position.
+  const layer = layerRefs[layerSymbol].current;
   const { x, y, width, height } = layer.getBoundingClientRect();
 
-  // cursor ttype needs to chnage to text
+  // Change cursor type to "text".
   await selectTool({ cursorControl, tool: TEXT });
 
+  // Add layer to history and layers panel.
   store.dispatch({
     type: ADDED_LAYER,
     layer: layerSymbol,
     layerType: TEXT,
-    person,
-    active: true
+    active: true,
+    person
   });
 
   store.dispatch({
@@ -34,8 +34,12 @@ async function animateText({
     active: true
   });
 
+  // Draw text box shape for text.
   await drawShape({
+    person,
+    history: false,
     cursorControl,
+    layerSymbol,
     layerControl,
     shape: SQUARE,
     x: x - 16,
@@ -44,7 +48,7 @@ async function animateText({
     height: height + 8
   });
 
-  // move back into position to write text
+  // Move cursor back into position to write text.
   await cursorControl.start({ x, y: y - 32 });
 
   let cursor = 0;
@@ -52,35 +56,37 @@ async function animateText({
   for (const span of spans) {
     span.style.opacity = 0;
   }
+  const length = spans.length;
 
   layer.style.opacity = 1;
 
-  // console.log(layer.dataset);
+  const parent = layer.parentNode;
+  const cursorEl = parent.querySelector("#cursor");
+
+  cursorEl.style.position = "fixed";
+  cursorEl.style.width = "4px";
+
+  const { height: cursorHeight } = spans[0].getBoundingClientRect();
+  cursorEl.style.height = `${cursorHeight}px`;
+  cursorEl.style.backgroundColor = person.color;
+  cursorEl.style.borderRadius = "10px";
+  cursorEl.style.boxShadow = "0 4px 8px 0 rgba(0,0,0,0.33)";
+  cursorEl.style.top = `${y}px`;
+  cursorEl.style.left = `${x}px`;
+
   await new Promise(resolve => {
-    let typingSpeed = 70;
-    // factor speed
-
-    function duration(speed, dist, slowdown = false, disp = 20) {
-      // radius increases closer to completion exponentionally
-
-      // const avgWord = 10;
-      // const value = disp * Math.sin(0.1 * dist) + speed;
-      // const perWordValue = value * avgWord;
-
-      const avgWord = 10;
-      const perWordValue = 100 * avgWord;
-
-      return slowdown ? 500 : (60 / perWordValue) * 1000;
-    }
+    const duration = (slowdown = false) =>
+      slowdown ? 500 : length > 30 ? 20 : 80;
 
     let text = "";
-
     function type() {
       if (cursor < layer.children.length) {
         text += layer.children[cursor].innerHTML;
         const { top, right } = layer.children[cursor].getBoundingClientRect();
 
         layer.children[cursor].style.opacity = 1;
+        cursorEl.style.top = `${top}px`;
+        cursorEl.style.left = `${right}px`;
 
         store.dispatch({
           type: UPDATE_LAYER,
@@ -94,8 +100,8 @@ async function animateText({
           layer.children[cursor].innerHTML == "," ||
           layer.children[cursor].innerHTML == "."
         )
-          setTimeout(type, duration(typingSpeed, cursor, true));
-        else setTimeout(type, duration(typingSpeed, cursor));
+          setTimeout(type, duration(true));
+        else setTimeout(type, duration());
       } else {
         resolve();
       }
@@ -103,7 +109,7 @@ async function animateText({
       cursor++;
     }
 
-    setTimeout(type, duration(typingSpeed, cursor));
+    setTimeout(type, duration());
   });
 
   layerControl.set({
@@ -116,7 +122,12 @@ async function animateText({
     active: false
   });
 
-  cursorControl.start({ x: -100, y: -100 });
+  cursorEl.style.opacity = 0;
+
+  cursorControl.start({
+    x: window.innerWidth / 2,
+    y: window.innerHeight + 100
+  });
 }
 
 export { animateText };

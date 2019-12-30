@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import "./App.css";
+import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { Window } from "./components/Window";
 
@@ -9,10 +8,13 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: sans-serif;
     background-color: #F7F7F7;
+    overflow: hidden;
   }
 
   * {
     box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    user-select: none;
   }
 `;
 

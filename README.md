@@ -1,5 +1,33 @@
 # untitled. 🧢👋
 
+
+- safari
+- mobile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - need to persist animated state outside of controls
 
   - rerenders are fucking shit up shit

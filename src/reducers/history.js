@@ -6,8 +6,10 @@ const history = (state = [], message) => {
   switch (type) {
     case CREATED_HISTORY_ITEM:
       return [entry, ...state];
+
     case ADDED_LAYER:
       const { person = JAY, layerType = TEXT } = message;
+
       return [
         {
           person,
@@ -16,7 +18,6 @@ const history = (state = [], message) => {
         },
         ...state
       ];
-
     default:
       return state;
   }

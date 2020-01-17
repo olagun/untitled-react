@@ -129,8 +129,8 @@ const Window = () => {
             value.y.set(size.height + 100);
           });
 
-          // setTimeout(advanceStep, preloaderTime);
-          setTimeout(advanceStep, 10000000);
+          setTimeout(advanceStep, preloaderTime);
+          // setTimeout(advanceStep, 10000000);
           break;
         case CREATE_ARTBOARD_STEP:
           // draw artboard
@@ -261,11 +261,11 @@ const Window = () => {
           }
 
           timeAnimateText(LAYER_SYMBOL_MAP.TITLE, PEOPLE_MAP.CHERIN, 0);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_1, PEOPLE_MAP.WOJTEK, 1000000);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_2, PEOPLE_MAP.SURYA, 3500000);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_3, PEOPLE_MAP.DARIO, 6000000);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_4, PEOPLE_MAP.BIANCA, 12000000);
-          timeAnimateText(LAYER_SYMBOL_MAP.SIGNOFF, PEOPLE_MAP.SAM, 18000000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_1, PEOPLE_MAP.WOJTEK, 1000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_2, PEOPLE_MAP.SURYA, 3500);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_3, PEOPLE_MAP.DARIO, 6000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_4, PEOPLE_MAP.BIANCA, 12000);
+          timeAnimateText(LAYER_SYMBOL_MAP.SIGNOFF, PEOPLE_MAP.SAM, 18000);
 
           //           animateText({
           //             cursorState,
@@ -342,13 +342,13 @@ const Window = () => {
           <MainInner>
             <Artboard artboardControls={artboardControls} show={step > CREATE_ARTBOARD_STEP}>
               <H1 ref={layerRefs[LAYER_SYMBOL_MAP.TITLE]}>Untitled</H1>
-              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_1]}>
+              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_1]} maxWidth="29.3055555556vw">
                 Is how everything starts. It’s the name of all documents before they become anything.
               </P>
-              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_2]}>
+              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_2]} maxWidth="32.0138888888vw">
                 That’s also me. A young product designer desperately trying to make a name for myself.
               </P>
-              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_3]}>
+              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_3]} maxWidth="32.5vw">
                 That’s also us. A group of young designers and developers lifting each other to become the
                 best of who we can be, both as creators and people.
               </P>

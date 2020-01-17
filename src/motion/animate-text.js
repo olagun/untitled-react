@@ -45,14 +45,20 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
   // Move cursor back into position to write text.
   await cursorControl.start({ x, y: y - 32 });
 
+  console.log(layer);
+  console.log(layer.children[0].children);
+  console.log(layer.children[1]);
+  console.log('------------------------');
+
   let cursor = 0;
-  const spans = layer.children;
-  for (const span of spans) {
-    span.style.opacity = 0;
-  }
+  const spans = layer.children[0].children;
+  // for (const span of spans) {
+  //   span.style.opacity = 0;
+  // }
   const length = spans.length;
 
   layer.style.opacity = 1;
+  layer.children[1].style.opacity = 1;
 
   const parent = layer.parentNode;
   const cursorEl = parent.querySelector('#cursor');
@@ -75,11 +81,14 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
 
     let text = '';
     function type() {
-      if (cursor < layer.children.length) {
-        text += layer.children[cursor].innerHTML;
-        const { top, right } = layer.children[cursor].getBoundingClientRect();
+      if (cursor < layer.children[0].children.length) {
+        text += layer.children[0].children[cursor].innerHTML;
+        const { top, right } = layer.children[0].children[cursor].getBoundingClientRect();
 
-        layer.children[cursor].style.opacity = 1;
+        // layer.children[cursor].style.opacity = 1;
+        console.log('TYPE FUNCTION CALLED', text, layer.children[1]);
+        // layer.children[1].innerHTML = 'type function called';
+        layer.children[1].innerHTML = text;
         cursorEl.style.top = `${top}px`;
         cursorEl.style.left = `${right}px`;
 
@@ -91,7 +100,10 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
 
         cursorControl.start({ x: right, y: top - 32 });
 
-        if (layer.children[cursor].innerHTML == ',' || layer.children[cursor].innerHTML == '.')
+        if (
+          layer.children[0].children[cursor].innerHTML == ',' ||
+          layer.children[0].children[cursor].innerHTML == '.'
+        )
           setTimeout(type, duration(true));
         else setTimeout(type, duration());
       } else {

@@ -30,10 +30,7 @@ const Artboard = ({ children, artboardControls, show }) => {
       animate={artboardControls}
       aspectRatio={width / height}
       width={
-        width <= 1024 && width < height
-        ? height * 0.9 * 0.5625
-        : width <= 1440
-        ? width - 144 : width * 0.9
+        width <= 1024 && width < height ? height * 0.9 * 0.5625 : width <= 1440 ? width - 144 : width * 0.9
       }
       height={
         width <= 1024 && width < height
@@ -50,12 +47,20 @@ const Artboard = ({ children, artboardControls, show }) => {
         {React.Children.map(children, child => {
           return React.Children.map(child, c => {
             return (
-              <div>
-                {child}
-                {false && React.cloneElement(child, {
-                  children: c.props.children.split('').map(d => <span>{d}</span>)
+              <div key={`artboard-element-${child.ref}`} style={{ position: 'relative' }}>
+                {React.cloneElement(child, {
+                  children: (
+                    <React.Fragment>
+                      <div style={{ position: 'relative', opacity: 0 }}>
+                        {c.props.children.split('').map(d => (
+                          <span>{d}</span>
+                        ))}
+                      </div>
+                      <div style={{ position: 'absolute', top: 0, left: 0 }} />
+                      <div id="cursor" />
+                    </React.Fragment>
+                  )
                 })}
-                <div id="cursor" />
               </div>
             );
           });
@@ -65,3 +70,11 @@ const Artboard = ({ children, artboardControls, show }) => {
   );
 };
 export { Artboard };
+// <div style={{ position: 'relative' }}>
+//     {React.cloneElement(child, {
+//       children: c.props.children.split('').map(d => <span>{d}</span>)
+//     })}
+//   <div style={{ position: 'absolute', top: 0, left: 0 }}>
+//   </div>
+//   <div id="cursor" />
+// </div>

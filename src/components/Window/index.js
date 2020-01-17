@@ -22,7 +22,6 @@ import {
   ASSEMBLING_STEP,
   ADDED_LAYER,
   JAY,
-  MINHEE,
   PEOPLE
 } from '../../config';
 import { useMotionValue, useAnimation, AnimatePresence } from 'framer-motion';
@@ -119,17 +118,19 @@ const Window = () => {
           // and have each element be 0 if step < ASSEMBLING_STEP
 
           // Set all layers to opacity 0.
-          for (const layerSymbol of LAYER_SYMBOLS) {
-            const layerRef = layerRefs[layerSymbol].current;
-            layerRef.style.opacity = 0;
-          }
+
+          // for (const layerSymbol of LAYER_SYMBOLS) {
+          //   const layerRef = layerRefs[layerSymbol].current;
+          //   layerRef.style.opacity = 0;
+          // }
 
           Object.entries(cursorState).forEach(([, value]) => {
             value.x.set(size.width / 2);
             value.y.set(size.height + 100);
           });
 
-          setTimeout(advanceStep, preloaderTime);
+          // setTimeout(advanceStep, preloaderTime);
+          setTimeout(advanceStep, 10000000);
           break;
         case CREATE_ARTBOARD_STEP:
           // draw artboard
@@ -151,7 +152,6 @@ const Window = () => {
             person: JAY,
             history: false
           });
-
 
           // fix people map to have symbols
           await cursorState[PEOPLE_MAP.JAY.name].control.start({
@@ -233,25 +233,69 @@ const Window = () => {
 
           // Text layers and their respective authors.
           /// maybe separate into function?
-          const textLayers = [
-            { text: LAYER_SYMBOL_MAP.TITLE, author: PEOPLE_MAP.CHERIN },
-            { text: LAYER_SYMBOL_MAP.P_1, author: PEOPLE_MAP.WOJTEK },
-            { text: LAYER_SYMBOL_MAP.P_2, author: PEOPLE_MAP.SURYA },
-            { text: LAYER_SYMBOL_MAP.P_3, author: PEOPLE_MAP.DARIO },
-            { text: LAYER_SYMBOL_MAP.P_4, author: PEOPLE_MAP.BIANCA },
-            { text: LAYER_SYMBOL_MAP.SIGNOFF, author: PEOPLE_MAP.SAM }
-          ];
-          for (const { author, text } of textLayers) {
-            await animateText({
-              cursorState,
-              setCursorState,
-              cursorControl: cursorState[author.name].control,
-              layerControl: layers[text].control,
-              layerSymbol: text,
-              layerRefs,
-              person: author
-            });
+
+          // animateText({
+          //   cursorState,
+          //   setCursorState,
+          //   cursorControl: cursorState[PEOPLE_MAP.CHERIN],
+          //   layerControl: layers[LAYER_SYMBOL_MAP.TITLE].control,
+          //   layerSymbol: LAYER_SYMBOL_MAP.TITLE,
+          //   layerRefs,
+          //   person: PEOPLE_MAP.CHERIN
+          // });
+
+          function timeAnimateText(text, author, timing) {
+            setTimeout(
+              () =>
+                animateText({
+                  cursorState,
+                  setCursorState,
+                  cursorControl: cursorState[author.name].control,
+                  layerControl: layers[text].control,
+                  layerSymbol: text,
+                  layerRefs,
+                  person: author
+                }),
+              timing == 0 ? 0 : timing + Math.random() * 500
+            );
           }
+
+          timeAnimateText(LAYER_SYMBOL_MAP.TITLE, PEOPLE_MAP.CHERIN, 0);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_1, PEOPLE_MAP.WOJTEK, 1000000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_2, PEOPLE_MAP.SURYA, 3500000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_3, PEOPLE_MAP.DARIO, 6000000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_4, PEOPLE_MAP.BIANCA, 12000000);
+          timeAnimateText(LAYER_SYMBOL_MAP.SIGNOFF, PEOPLE_MAP.SAM, 18000000);
+
+          //           animateText({
+          //             cursorState,
+          //             setCursorState,
+          //             cursorControl: cursorState[PEOPLE_MAP.CHERIN.name].control,
+          //             layerControl: layers[LAYER_SYMBOL_MAP.TITLE].control,
+          //             layerSymbol: LAYER_SYMBOL_MAP.TITLE,
+          //             layerRefs,
+          //             person: PEOPLE_MAP.CHERIN
+          //           });
+          //
+          //           const textLayers = [
+          //             // { text: LAYER_SYMBOL_MAP.TITLE, author: PEOPLE_MAP.CHERIN },
+          //             { text: LAYER_SYMBOL_MAP.P_1, author: PEOPLE_MAP.WOJTEK },
+          //             { text: LAYER_SYMBOL_MAP.P_2, author: PEOPLE_MAP.SURYA },
+          //             { text: LAYER_SYMBOL_MAP.P_3, author: PEOPLE_MAP.DARIO },
+          //             { text: LAYER_SYMBOL_MAP.P_4, author: PEOPLE_MAP.BIANCA },
+          //             { text: LAYER_SYMBOL_MAP.SIGNOFF, author: PEOPLE_MAP.SAM }
+          //           ];
+          //           for (const { author, text } of textLayers) {
+          //             await animateText({
+          //               cursorState,
+          //               setCursorState,
+          //               cursorControl: cursorState[author.name].control,
+          //               layerControl: layers[text].control,
+          //               layerSymbol: text,
+          //               layerRefs,
+          //               person: author
+          //             });
+          //           }
 
           advanceStep();
           break;

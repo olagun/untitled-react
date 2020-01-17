@@ -6,9 +6,10 @@ const HistoryItemContainer = styled(motion.div)`
   grid-auto-flow: column;
   grid-gap: 8px;
   padding: 0 28px;
+  margin-top: 10px;
 
   & + & {
-    margin-top: 16px;
+    margin-top: 20px;
   }
 `;
 

@@ -51,7 +51,8 @@ const Artboard = ({ children, artboardControls, show }) => {
           return React.Children.map(child, c => {
             return (
               <div>
-                {React.cloneElement(child, {
+                {child}
+                {false && React.cloneElement(child, {
                   children: c.props.children.split('').map(d => <span>{d}</span>)
                 })}
                 <div id="cursor" />

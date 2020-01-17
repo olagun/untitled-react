@@ -54,7 +54,7 @@ async function drawShape({
       ]);
       break;
     case SQUARE:
-      layerControl.set({ x: offset.x + x, y: offset.y + y });
+      layerControl.set({ x: offset.x + x, y: offset.y + y, rx: width * 0.006756756757 });
 
       await Promise.all([
         layerControl.start({ width, height }),

@@ -5,13 +5,21 @@ const LayerContainer = styled.div`
   grid-auto-flow: column;
   grid-gap: 4px;
   justify-content: left;
+
   position: relative;
+  margin: 0;
+  padding: 10px 28px;
 
-  & + & {
+  /*& + & {
     margin-top: 16px;
-  }
+  }*/
+  transition: background-color 0.2s ease;
 
-  ::before {
+  :hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  /*::before {
     content: "";
     position: absolute;
     top: -8px;
@@ -36,7 +44,7 @@ const LayerContainer = styled.div`
       active ? color : "transparent"};
     width: 4px;
     height: 16px;
-  }
+  }*/
 `;
 
 export { LayerContainer };

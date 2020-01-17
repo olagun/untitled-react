@@ -8,8 +8,10 @@ const Label = styled.div`
   font-size: 14px;
   text-transform: uppercase;
   display: inline-block;
-  margin-bottom: 20px;
-  padding: 8px 0;
+  /*margin-bottom: 20px;*/
+  margin: 0;
+  padding: 8px 28px;
+  /*border: 1px solid blue;*/
 `;
 
 export { Label };

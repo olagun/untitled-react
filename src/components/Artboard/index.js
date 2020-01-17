@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { ArtboardContainer } from "./styled/ArtboardContainer";
-import { useWindowSize } from "react-use";
-import { useDispatch } from "react-redux";
-import { RESIZE } from "../../config";
-import { ArtboardInner } from "./styled/ArtboardInner";
+import React, { useEffect, useRef } from 'react';
+import { ArtboardContainer } from './styled/ArtboardContainer';
+import { useWindowSize } from 'react-use';
+import { useDispatch } from 'react-redux';
+import { RESIZE } from '../../config';
+import { ArtboardInner } from './styled/ArtboardInner';
 
 const Artboard = ({ children, artboardControls, show }) => {
   const { width, height } = useWindowSize();
@@ -19,9 +19,9 @@ const Artboard = ({ children, artboardControls, show }) => {
     }
 
     onResize();
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 
@@ -29,6 +29,19 @@ const Artboard = ({ children, artboardControls, show }) => {
     <ArtboardContainer
       animate={artboardControls}
       aspectRatio={width / height}
+      width={
+        width <= 1024 && width < height
+        ? height * 0.9 * 0.5625
+        : width <= 1440
+        ? width - 144 : width * 0.9
+      }
+      height={
+        width <= 1024 && width < height
+          ? height * 0.9
+          : width <= 1440
+          ? (width - 144) * 0.5138888889
+          : width * 0.9 * 0.5138888889
+      }
       // initial={{ opacity: 0 }}
       ref={ref}
       offset={-48}
@@ -39,11 +52,9 @@ const Artboard = ({ children, artboardControls, show }) => {
             return (
               <div>
                 {React.cloneElement(child, {
-                  children: c.props.children
-                    .split("")
-                    .map(d => <span>{d}</span>)
+                  children: c.props.children.split('').map(d => <span>{d}</span>)
                 })}
-                <div id="cursor"></div>
+                <div id="cursor" />
               </div>
             );
           });

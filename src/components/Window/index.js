@@ -134,8 +134,9 @@ const Window = () => {
         case CREATE_ARTBOARD_STEP:
           // draw artboard
           // cursor ttype needs to chnage to text
+          console.log('SIZING AT CREATION', artboardBounds);
 
-          // reuce and organize parameters
+          // reduce and organize parameters
           await drawShape({
             setCursorState,
             cursorControl: cursorState[JAY.name].control,
@@ -150,6 +151,7 @@ const Window = () => {
             person: JAY,
             history: false
           });
+
 
           // fix people map to have symbols
           await cursorState[PEOPLE_MAP.JAY.name].control.start({
@@ -261,8 +263,16 @@ const Window = () => {
   }, [step]);
 
   // layers should only update if serialized state changes
+  // return (
+  //   <React.Fragment>
+  //     <WindowContainer showShadow={true} scale={1}>
+  //       WindowContainer
+  //     </WindowContainer>
+  //   </React.Fragment>
+  // );
+
   return (
-    <div>
+    <React.Fragment>
       <LayerContainer keys={Reflect.ownKeys(layers)} size={size} layers={layers} />
       {step > PRELOADER_STEP && <CursorContainer cursors={Object.values(cursorState)} />}
       <WindowContainer showShadow={step > PRELOADER_STEP} scale={scale}>
@@ -312,7 +322,7 @@ const Window = () => {
           </SidePanel>
         </MainContainer>
       </WindowContainer>
-    </div>
+    </React.Fragment>
   );
 };
 

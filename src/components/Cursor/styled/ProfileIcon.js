@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const ProfileIcon = styled.img`
   clip-path: circle(50%);
-  height: 18px;
+  height: 22px;
   margin-right: 8px;
 `;
 

@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
-import { WindowContainer } from "./styled/WindowContainer";
-import { MainContainer } from "./styled/MainContainer";
-import { Toolbar } from "../Toolbar";
-import { SidePanel } from "../SidePanel";
-import { Artboard } from "../Artboard";
-import { LayerItem } from "../LayerItem";
-import { HistoryItem } from "../HistoryItem";
-import { Tools } from "../Tools";
-import { MainInner } from "./styled/MainInner";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState, useRef } from 'react';
+import { WindowContainer } from './styled/WindowContainer';
+import { MainContainer } from './styled/MainContainer';
+import { Toolbar } from '../Toolbar';
+import { SidePanel } from '../SidePanel';
+import { Artboard } from '../Artboard';
+import { LayerItem } from '../LayerItem';
+import { HistoryItem } from '../HistoryItem';
+import { Tools } from '../Tools';
+import { MainInner } from './styled/MainInner';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   CREATED_ARTBOARD,
   PEOPLE_MAP,
@@ -22,17 +22,18 @@ import {
   ASSEMBLING_STEP,
   ADDED_LAYER,
   JAY,
+  MINHEE,
   PEOPLE
-} from "../../config";
-import { useMotionValue, useAnimation, AnimatePresence } from "framer-motion";
-import { useWindowSize } from "react-use";
-import { Preloader } from "../Preloader";
-import { H1 } from "../H1";
-import { P } from "../P";
-import { drawShape, animateText, selectTool } from "../../motion";
-import { CursorContainer } from "../CursorContainer";
-import { LayerContainer } from "../LayerContainer";
-import { advanceStep } from "../../actions";
+} from '../../config';
+import { useMotionValue, useAnimation, AnimatePresence } from 'framer-motion';
+import { useWindowSize } from 'react-use';
+import { Preloader } from '../Preloader';
+import { H1 } from '../H1';
+import { P } from '../P';
+import { drawShape, animateText, selectTool } from '../../motion';
+import { CursorContainer } from '../CursorContainer';
+import { LayerContainer } from '../LayerContainer';
+import { advanceStep } from '../../actions';
 
 // # of millseconds for blinking "untitled" preloader.
 const preloaderTime = 4 * 1000;
@@ -55,9 +56,7 @@ const Window = () => {
   const dispatch = useDispatch();
   const size = useWindowSize();
   const [scale] = useState(1);
-  const { step, history, layerSizes, artboard: artboardBounds } = useSelector(
-    store => store
-  );
+  const { step, history, layerSizes, artboard: artboardBounds } = useSelector(store => store);
 
   const artboardControls = useAnimation();
   const toolControls = TOOLS.map(() => useAnimation());
@@ -147,7 +146,9 @@ const Window = () => {
             width: artboardBounds.width,
             height: artboardBounds.height,
             addBounds: true,
-            finish: true
+            finish: true,
+            person: JAY,
+            history: false
           });
 
           // fix people map to have symbols
@@ -157,15 +158,16 @@ const Window = () => {
           });
 
           // move to "add layer action" with history option
-          dispatch({
-            type: ADDED_LAYER,
-            layer: "artboardLayer",
-            x: artboardBounds.x,
-            y: artboardBounds.y,
-            layerType: SHAPE,
-            width: artboardBounds.width,
-            height: artboardBounds.height
-          });
+          // ARTBOARD INITIALIZES, BUT SHOULDN'T ADD SHAPE LAYER
+          // dispatch({
+          //   type: ADDED_LAYER,
+          //   layer: 'artboardLayer',
+          //   x: artboardBounds.x,
+          //   y: artboardBounds.y,
+          //   layerType: SHAPE,
+          //   width: artboardBounds.width,
+          //   height: artboardBounds.height
+          // });
 
           dispatch({
             type: CREATED_HISTORY_ITEM,
@@ -218,12 +220,13 @@ const Window = () => {
             type: ADDED_LAYER,
             placeholder: true,
             layer: layers.globeLayer,
-            name: "Untitled Circle",
+            name: 'Untitled Circle',
             layerType: SHAPE,
             x: artboardBounds.width - diameter - 72,
             y: 72,
             width: artboardBounds.height - 144,
-            height: artboardBounds.height - 144
+            height: artboardBounds.height - 144,
+            person: PEOPLE_MAP.MICAH
           });
 
           // Text layers and their respective authors.
@@ -260,18 +263,10 @@ const Window = () => {
   // layers should only update if serialized state changes
   return (
     <div>
-      <LayerContainer
-        keys={Reflect.ownKeys(layers)}
-        size={size}
-        layers={layers}
-      />
-      {step > PRELOADER_STEP && (
-        <CursorContainer cursors={Object.values(cursorState)} />
-      )}
+      <LayerContainer keys={Reflect.ownKeys(layers)} size={size} layers={layers} />
+      {step > PRELOADER_STEP && <CursorContainer cursors={Object.values(cursorState)} />}
       <WindowContainer showShadow={step > PRELOADER_STEP} scale={scale}>
-        <AnimatePresence>
-          {step === PRELOADER_STEP && <Preloader />}
-        </AnimatePresence>
+        <AnimatePresence>{step === PRELOADER_STEP && <Preloader />}</AnimatePresence>
         <Toolbar show={step > CREATE_ARTBOARD_STEP} />
         <MainContainer>
           <SidePanel title="Layers" show={step > CREATE_ARTBOARD_STEP}>
@@ -289,29 +284,21 @@ const Window = () => {
                 </LayerItem>
               );
             })}
-          </SidePanel>{" "}
+          </SidePanel>{' '}
           <MainInner>
-            <Artboard
-              artboardControls={artboardControls}
-              show={step > CREATE_ARTBOARD_STEP}
-            >
+            <Artboard artboardControls={artboardControls} show={step > CREATE_ARTBOARD_STEP}>
               <H1 ref={layerRefs[LAYER_SYMBOL_MAP.TITLE]}>Untitled</H1>
               <P ref={layerRefs[LAYER_SYMBOL_MAP.P_1]}>
-                Is how everything starts. It’s the name of all documents before
-                they become anything.
+                Is how everything starts. It’s the name of all documents before they become anything.
               </P>
               <P ref={layerRefs[LAYER_SYMBOL_MAP.P_2]}>
-                That’s also me. A young product designer desperately trying to
-                make a name for myself.
+                That’s also me. A young product designer desperately trying to make a name for myself.
               </P>
               <P ref={layerRefs[LAYER_SYMBOL_MAP.P_3]}>
-                That’s also us. A group of young designers and developers
-                lifting each other to become the best of who we can be, both as
-                creators and people.
+                That’s also us. A group of young designers and developers lifting each other to become the
+                best of who we can be, both as creators and people.
               </P>
-              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_4]}>
-                If that’s also you, come join us.
-              </P>
+              <P ref={layerRefs[LAYER_SYMBOL_MAP.P_4]}>If that’s also you, come join us.</P>
               <P ref={layerRefs[LAYER_SYMBOL_MAP.SIGNOFF]}>— the untitled</P>
             </Artboard>
           </MainInner>
@@ -319,12 +306,7 @@ const Window = () => {
           <SidePanel title="History" show={step > CREATE_ARTBOARD_STEP}>
             <AnimatePresence>
               {history.map(({ person, time, action }) => (
-                <HistoryItem
-                  key={time}
-                  person={person}
-                  time={time}
-                  action={action}
-                />
+                <HistoryItem key={time} person={person} time={time} action={action} />
               ))}
             </AnimatePresence>
           </SidePanel>

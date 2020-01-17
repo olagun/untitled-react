@@ -66,11 +66,12 @@ async function drawShape({
       break;
   }
 
-  if (history) {
+  if (history && false) {
+    console.log('History yes, dispatched', person);
     store.dispatch({
       type: CREATED_HISTORY_ITEM,
       entry: {
-        person,
+        person: person,
         action: SHAPE,
         time: Date.now()
       }

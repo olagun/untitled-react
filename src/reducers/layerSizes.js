@@ -1,15 +1,16 @@
-import { ADDED_LAYER, UPDATE_LAYER, JAY, SHAPE } from "../config";
+import { ADDED_LAYER, UPDATE_LAYER, JAY, SHAPE } from '../config';
 
 const layerSizes = (state = {}, message) => {
   const { type, layer } = message;
 
   if (type === ADDED_LAYER) {
+    console.log('ADDED LAYER', message.person);
     const {
       x = 0,
       y = 0,
       width = 0,
       height = 0,
-      name = "Untitled",
+      name = 'Untitled',
       person = JAY,
       active = false,
       layerType = SHAPE,

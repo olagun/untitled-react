@@ -4,7 +4,7 @@ const layerSizes = (state = {}, message) => {
   const { type, layer } = message;
 
   if (type === ADDED_LAYER) {
-    console.log('ADDED LAYER', message.person);
+    // console.log('ADDED LAYER', message.person);
     const {
       x = 0,
       y = 0,

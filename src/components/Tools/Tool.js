@@ -4,11 +4,11 @@ import { ToolButtonText } from "./styled/ToolButtonText";
 import { ToolButton } from "./styled/ToolButton";
 import { capitalize } from "../../util";
 
-const Tool = ({ type, innerRef, control }) => (
+const Tool = ({ type, innerRef, control, transition }) => (
   <ToolButton
     ref={innerRef}
     animate={control}
-    transition={{ ease: "linear", duration: 0.2 }}
+    transition={transition ? transition : { ease: "linear", duration: 0.2 }}
     whileHover={{
       backgroundColor: "rgba(0, 0, 0, 0.07)",
       cursor: "pointer"

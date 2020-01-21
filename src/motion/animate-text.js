@@ -4,7 +4,7 @@ import { SQUARE, TEXT, UPDATE_LAYER, ADDED_LAYER } from '../config';
 import { selectTool } from './select-tool';
 
 // strat, write dummy text side effect, measure, create actual, then do
-async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs, person }) {
+async function animateText({ cursorControl, layerControl, layerTransition, layerSymbol, layerRefs, person }) {
   // Get real text position.
   const layer = layerRefs[layerSymbol].current;
   const { x, y, width, height } = layer.getBoundingClientRect();
@@ -35,6 +35,7 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
     cursorControl,
     layerSymbol,
     layerControl,
+    layerTransition,
     shape: SQUARE,
     x: x - 16,
     y: y - 6,
@@ -45,10 +46,10 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
   // Move cursor back into position to write text.
   await cursorControl.start({ x, y: y - 32 });
 
-  console.log(layer);
-  console.log(layer.children[0].children);
-  console.log(layer.children[1]);
-  console.log('------------------------');
+  // console.log(layer);
+  // console.log(layer.children[0].children);
+  // console.log(layer.children[1]);
+  // console.log('------------------------');
 
   let cursor = 0;
   const spans = layer.children[0].children;
@@ -77,16 +78,29 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
   await new Promise(resolve => {
     // const duration = (slowdown = false) =>
     //   slowdown ? 500 : length > 30 ? 20 : 80;
-    const duration = (slowdown = false) => (slowdown ? 120 : length > 20 ? (length > 100 ? 10 : 20) : 60);
+
+    // const duration = (slowdown = false) => (slowdown ? 120 : length > 20 ? (length > 100 ? 10 : 20) : 60);
+    const duration = previousDuration => (previousDuration < 20 ? previousDuration : previousDuration - 1);
 
     let text = '';
+    let previousDuration = 80;
+
+    // UNTITLED and —untitled
+    if (layer.children[0].children.length < 10) {
+      previousDuration = 130;
+    } else if (layer.children[0].children.length < 40) {
+      previousDuration = 140;
+    } else if (layer.children[0].children.length > 100) {
+      previousDuration = 20;
+    }
+  
     function type() {
       if (cursor < layer.children[0].children.length) {
         text += layer.children[0].children[cursor].innerHTML;
         const { top, right } = layer.children[0].children[cursor].getBoundingClientRect();
 
         // layer.children[cursor].style.opacity = 1;
-        console.log('TYPE FUNCTION CALLED', text, layer.children[1]);
+        // console.log('TYPE FUNCTION CALLEDx', text, layer.children[1]);
         // layer.children[1].innerHTML = 'type function called';
         layer.children[1].innerHTML = text;
         cursorEl.style.top = `${top}px`;
@@ -98,14 +112,26 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
           name: text
         });
 
-        cursorControl.start({ x: right, y: top - 32 });
+        cursorControl.start({
+          x: right,
+          y: top - 32,
+          transition: {
+            type: 'tween',
+            duration: 0.15
+          }
+        });
 
-        if (
-          layer.children[0].children[cursor].innerHTML == ',' ||
-          layer.children[0].children[cursor].innerHTML == '.'
-        )
-          setTimeout(type, duration(true));
-        else setTimeout(type, duration());
+        previousDuration = duration(previousDuration);
+
+        setTimeout(type, previousDuration + 20);
+        // if (
+        //   layer.children[0].children[cursor].innerHTML == ',' ||
+        //   layer.children[0].children[cursor].innerHTML == '.'
+        // ) {
+        //   setTimeout(type, previousDuration + 20);
+        // } else {
+        //   setTimeout(type, previousDuration);
+        // }
       } else {
         resolve();
       }
@@ -113,7 +139,7 @@ async function animateText({ cursorControl, layerControl, layerSymbol, layerRefs
       cursor++;
     }
 
-    setTimeout(type, duration());
+    setTimeout(type, Math.floor(previousDuration));
   });
 
   layerControl.set({

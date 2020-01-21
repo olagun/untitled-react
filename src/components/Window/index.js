@@ -35,7 +35,8 @@ import { LayerContainer } from '../LayerContainer';
 import { advanceStep } from '../../actions';
 
 // # of millseconds for blinking "untitled" preloader.
-const preloaderTime = 4 * 1000;
+// const preloaderTime = 4 * 1000;
+const preloaderTime = 4000;
 
 // Symbols used to reference layers.
 const LAYER_SYMBOL_MAP = {
@@ -60,6 +61,30 @@ const Window = () => {
   const artboardControls = useAnimation();
   const toolControls = TOOLS.map(() => useAnimation());
 
+  // const defaultTransition = { type: 'tween', duration: 3 };
+  // const defaultTransition = { type: 'spring', mass: 0.5, damping: 180, restDelta: 5 };
+  // const defaultTransition = { type: 'tween', ease: [0.17, 0.67, 0.83, 0.67] };
+  // const defaultTransition = { type: 'spring', damping: 100, restDelta: 50 };
+  const defaultTransition = {
+    type: 'spring',
+    damping: 300,
+    stiffness: 150,
+    velocity: 100,
+    restSpeed: 10,
+    restDelta: 15
+  };
+
+  // Used directly in animate-text.js
+  // const typeTransition = {
+  //   type: 'tween',
+  //   duration: 0.150
+  // };
+
+  const artboardTransition = defaultTransition,
+    cursorTransition = defaultTransition;
+
+  const toolsTransition = null;
+
   // Layers
   const layerRefs = LAYER_SYMBOLS.reduce(
     (obj, layerSymbol) => ({
@@ -71,11 +96,13 @@ const Window = () => {
   const layers = {
     artboardLayer: {
       layer: { type: SHAPE, shapeType: SQUARE },
-      control: useAnimation()
+      control: useAnimation(),
+      transition: defaultTransition
     },
     globeLayer: {
       layer: { type: SHAPE, shapeType: CIRCLE },
-      control: useAnimation()
+      control: useAnimation(),
+      transition: defaultTransition
     },
     ...LAYER_SYMBOLS.reduce(
       (acc, curr) => ({
@@ -99,6 +126,7 @@ const Window = () => {
           active: false,
           tool: null,
           control: useAnimation(),
+          transition: cursorTransition,
           x: useMotionValue(-100),
           y: useMotionValue(-100)
         }
@@ -142,6 +170,7 @@ const Window = () => {
             setCursorState,
             cursorControl: cursorState[JAY.name].control,
             layerControl: layers.artboardLayer.control,
+            layerTransition: layers.artboardLayer.transition,
             shape: SQUARE,
             x: 0,
             y: 0,
@@ -200,6 +229,7 @@ const Window = () => {
               person: PEOPLE_MAP.MICAH,
               cursorControl: cursorState[PEOPLE_MAP.MICAH.name].control,
               layerControl: layers.globeLayer.control,
+              layerTransition: layers.globeLayer.transition,
               shape: CIRCLE,
               x: artboardBounds.width - diameter - 72,
               y: 72,
@@ -252,6 +282,7 @@ const Window = () => {
                   setCursorState,
                   cursorControl: cursorState[author.name].control,
                   layerControl: layers[text].control,
+                  layerTransition: defaultTransition,
                   layerSymbol: text,
                   layerRefs,
                   person: author
@@ -261,11 +292,11 @@ const Window = () => {
           }
 
           timeAnimateText(LAYER_SYMBOL_MAP.TITLE, PEOPLE_MAP.CHERIN, 0);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_1, PEOPLE_MAP.WOJTEK, 1000);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_2, PEOPLE_MAP.SURYA, 3500);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_3, PEOPLE_MAP.DARIO, 6000);
-          timeAnimateText(LAYER_SYMBOL_MAP.P_4, PEOPLE_MAP.BIANCA, 12000);
-          timeAnimateText(LAYER_SYMBOL_MAP.SIGNOFF, PEOPLE_MAP.SAM, 18000);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_1, PEOPLE_MAP.WOJTEK, 500);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_2, PEOPLE_MAP.SURYA, 1500);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_3, PEOPLE_MAP.DARIO, 2200);
+          timeAnimateText(LAYER_SYMBOL_MAP.P_4, PEOPLE_MAP.BIANCA, 8500);
+          timeAnimateText(LAYER_SYMBOL_MAP.SIGNOFF, PEOPLE_MAP.SAM, 14000);
 
           //           animateText({
           //             cursorState,
@@ -329,6 +360,7 @@ const Window = () => {
 
               return (
                 <LayerItem
+                  key={'layerItem-' + layer.person.name}
                   active={layer.active}
                   person={layer.person}
                   type={layer.type}
@@ -340,7 +372,11 @@ const Window = () => {
             })}
           </SidePanel>{' '}
           <MainInner>
-            <Artboard artboardControls={artboardControls} show={step > CREATE_ARTBOARD_STEP}>
+            <Artboard
+              artboardControls={artboardControls}
+              artboardTransition={artboardTransition}
+              show={step > CREATE_ARTBOARD_STEP}
+            >
               <H1 ref={layerRefs[LAYER_SYMBOL_MAP.TITLE]}>Untitled</H1>
               <P ref={layerRefs[LAYER_SYMBOL_MAP.P_1]} maxWidth="29.3055555556vw">
                 Is how everything starts. It’s the name of all documents before they become anything.
@@ -356,11 +392,11 @@ const Window = () => {
               <P ref={layerRefs[LAYER_SYMBOL_MAP.SIGNOFF]}>— the untitled</P>
             </Artboard>
           </MainInner>
-          <Tools show={step > CREATE_ARTBOARD_STEP} control={toolControls} />
+          <Tools show={step > CREATE_ARTBOARD_STEP} control={toolControls} transition={toolsTransition} />
           <SidePanel title="History" show={step > CREATE_ARTBOARD_STEP}>
             <AnimatePresence>
               {history.map(({ person, time, action }) => (
-                <HistoryItem key={time} person={person} time={time} action={action} />
+                <HistoryItem key={'historyItem-' + time} person={person} time={time} action={action} />
               ))}
             </AnimatePresence>
           </SidePanel>

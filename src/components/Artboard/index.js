@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { RESIZE } from '../../config';
 import { ArtboardInner } from './styled/ArtboardInner';
 
-const Artboard = ({ children, artboardControls, show }) => {
+const Artboard = ({ children, artboardControls, artboardTransition, show }) => {
   const { width, height } = useWindowSize();
   const dispatch = useDispatch();
   const ref = useRef();
@@ -28,6 +28,7 @@ const Artboard = ({ children, artboardControls, show }) => {
   return (
     <ArtboardContainer
       animate={artboardControls}
+      transition={artboardTransition}
       aspectRatio={width / height}
       width={
         width <= 1024 && width < height ? height * 0.9 * 0.5625 : width <= 1440 ? width - 144 : width * 0.9
@@ -52,8 +53,8 @@ const Artboard = ({ children, artboardControls, show }) => {
                   children: (
                     <React.Fragment>
                       <div style={{ position: 'relative', opacity: 0 }}>
-                        {c.props.children.split('').map(d => (
-                          <span>{d}</span>
+                        {c.props.children.split('').map((d, index) => (
+                          <span key={`span-${d}-${index}`}>{d}</span>
                         ))}
                       </div>
                       <div style={{ position: 'absolute', top: 0, left: 0 }} />

@@ -23,21 +23,22 @@ const HistoryItem = ({ person: { name, img } = JAY, time = Date.now(), action = 
   });
 
   function toTime(time) {
-    if (time < 1000) {
+    if (time < 2000) {
       return 'Just now';
     }
 
-    return `${Math.floor(relativeTime / 10) * 10}ms`;
+    return `${Math.floor((relativeTime / 1000) | 0)}s`;
+    // return `${Math.floor(relativeTime / 10) * 10}ms`;
 
-    if (time < 60 * 1000) {
-      return `${Math.floor((relativeTime / 1000) | 0)}s`;
-    }
-
-    if (time < 60 * 60 * 1000) {
-      return `${Math.floor((relativeTime / 60 / 1000) | 0)}m`;
-    }
-
-    return `${Math.floor((relativeTime / 60 / 60 / 1000) | 0)}h`;
+//     if (time < 60 * 1000) {
+//       return `${Math.floor((relativeTime / 1000) | 0)}s`;
+//     }
+// 
+//     if (time < 60 * 60 * 1000) {
+//       return `${Math.floor((relativeTime / 60 / 1000) | 0)}m`;
+//     }
+// 
+//     return `${Math.floor((relativeTime / 60 / 60 / 1000) | 0)}h`;
   }
 
   return (

@@ -1,13 +1,10 @@
-import { store } from "../store";
-import {
-  CIRCLE,
-  SQUARE,
-  SHAPE,
-  CREATED_HISTORY_ITEM} from "../config";
+import { store } from '../store';
+import { CIRCLE, SQUARE, SHAPE, CREATED_HISTORY_ITEM } from '../config';
 
 async function drawShape({
   cursorControl,
   layerControl,
+  layerTransition,
   shape,
   x,
   y,
@@ -49,15 +46,18 @@ async function drawShape({
           rx: halfWidth,
           ry: halfHeight,
           cx: offset.x + x + halfWidth,
-          cy: offset.y + y + halfHeight
+          cy: offset.y + y + halfHeight,
+          transition: layerTransition
         })
       ]);
       break;
     case SQUARE:
-      layerControl.set({ x: offset.x + x, y: offset.y + y, rx: width * 0.006756756757 });
+      // layerControl.set({ x: 0, y: 0, width: 0, height: 0 });
+      // layerControl.set({ x: offset.x + x, y: offset.y + y, rx: width * 0.006756756757 });
+      layerControl.set({ x: offset.x + x, y: offset.y + y, width: 0, height: 0, rx: width * 0.006756756757 });
 
       await Promise.all([
-        layerControl.start({ width, height }),
+        layerControl.start({ width, height, transition: layerTransition }),
         cursorControl.start({
           x: offset.x + x + width,
           y: offset.y + y + height
@@ -67,7 +67,7 @@ async function drawShape({
   }
 
   if (history && false) {
-    console.log('History yes, dispatched', person);
+    // console.log('History yes, dispatched', person);
     store.dispatch({
       type: CREATED_HISTORY_ITEM,
       entry: {
@@ -79,12 +79,12 @@ async function drawShape({
   }
 
   if (finish) {
-    layerControl.set({ strokeDasharray: "0 0" });
+    layerControl.set({ strokeDasharray: '0 0' });
   }
 
   if (placeholder) {
     layerControl.start({
-      fill: "rgba(0, 0, 0, 0.05)"
+      fill: 'rgba(0, 0, 0, 0.05)'
     });
   }
 }

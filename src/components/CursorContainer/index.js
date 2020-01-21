@@ -11,7 +11,8 @@ const CursorContainer = ({ cursors = [] }) => (
           y = 0,
           active = false,
           tool = null,
-          control = null
+          control = null,
+          transition = null
         },
         i
       ) => (
@@ -23,6 +24,7 @@ const CursorContainer = ({ cursors = [] }) => (
           active={active}
           person={person}
           animate={control}
+          transition={transition}
           custom={person}
         />
       )

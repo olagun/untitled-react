@@ -2,7 +2,7 @@ import { ARTBOARD_LAYER_REF } from '../config';
 
 const layers = (state = {}, { type, layerSymbol, ref }) => {
 	if (type === ARTBOARD_LAYER_REF) {
-		console.log('REDUCER HIT', state, type, layerSymbol, ref);
+		// console.log('REDUCER HIT', state, type, layerSymbol, ref);
 		return {
 			...state,
 			[layerSymbol]: ref

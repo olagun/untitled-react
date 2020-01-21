@@ -5,13 +5,13 @@ const history = (state = [], message) => {
 
   switch (type) {
     case CREATED_HISTORY_ITEM:
-      console.log('CREATED HISTORY ITEM', message);
+      // console.log('CREATED HISTORY ITEM', message);
       return [entry, ...state];
 
     case ADDED_LAYER:
       const { person = SAM, layerType = TEXT } = message;
 
-      console.log('ADDED_LAYER', person);
+      // console.log('ADDED_LAYER', person);
       return [
         {
           person,

@@ -7,6 +7,7 @@ const Shape = React.memo(
   ({
     type = SQUARE,
     control,
+    transition,
     serialize = {
       x: 0,
       y: 0,
@@ -24,11 +25,15 @@ const Shape = React.memo(
       strokeWidth: '2',
       fill: placeholder ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0)'
     };
-
+    
     return type == SQUARE ? (
-      <motion.rect initial={{ x, y, width, height, ...strokeProps }} animate={control} />
+      <motion.rect
+        initial={{ x, y, width, height, ...strokeProps }}
+        animate={control}
+        transition={transition}
+      />
     ) : (
-      <motion.ellipse animate={control} initial={strokeProps} />
+      <motion.ellipse animate={control} transition={transition} initial={strokeProps} />
     );
   }
 );
